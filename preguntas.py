@@ -15,29 +15,29 @@ def pregunta_01():
     Complete el código presentado a continuación.
     """
     # Lea el archivo `gm_2008_region.csv` y asignelo al DataFrame `df`
-    df = ____
-
+    df = pd.read_csv("gm_2008_region.csv")
+    
     # Asigne la columna "life" a `y` y la columna "fertility" a `X`
-    y = ____[____].____
-    X = ____[____].____
+    y = df["life"].values
+    X = df["fertility"].values
 
     # Imprima las dimensiones de `y`
-    print(____.____)
+    print(y.shape)
 
     # Imprima las dimensiones de `X`
-    print(____.____)
+    print(X.shape)
 
     # Transforme `y` a un array de numpy usando reshape
-    y_reshaped = y.reshape(____, ____)
+    y_reshaped = y.reshape(139, 1)
 
     # Trasforme `X` a un array de numpy usando reshape
-    X_reshaped = X.reshape(____, ____)
+    X_reshaped = X.reshape(139, 1)
 
     # Imprima las nuevas dimensiones de `y`
-    print(____.____)
+    print(y_reshaped.shape)
 
     # Imprima las nuevas dimensiones de `X`
-    print(____.____)
+    print(X_reshaped.shape)
 
 
 def pregunta_02():
@@ -47,22 +47,28 @@ def pregunta_02():
     """
 
     # Lea el archivo `gm_2008_region.csv` y asignelo al DataFrame `df`
-    df = ____
+    df = pd.read_csv("gm_2008_region.csv")
 
     # Imprima las dimensiones del DataFrame
-    print(____.____)
+    print(df.shape)
 
     # Imprima la correlación entre las columnas `life` y `fertility` con 4 decimales.
-    print(____)
+    df_corr = df[['life', 'fertility']].corr()
+    corr = np.array(df_corr)[0][1]
+    print(corr.round(4))
 
     # Imprima la media de la columna `life` con 4 decimales.
-    print(____)
+    mean = df["life"].mean()
+    print(np.round(mean, 4))
 
     # Imprima el tipo de dato de la columna `fertility`.
-    print(____)
+    #print(df["fertility"].dtypes)
+    print(type(df["fertility"]))
 
     # Imprima la correlación entre las columnas `GDP` y `life` con 4 decimales.
-    print(____)
+    df_corr = df[['GDP', 'life']].corr()
+    corr = np.array(df_corr)[0][1]
+    print(corr.round(4))
 
 
 def pregunta_03():
@@ -70,37 +76,37 @@ def pregunta_03():
     Entrenamiento del modelo sobre todo el conjunto de datos.
     Complete el código presentado a continuación.
     """
-
+    
     # Lea el archivo `gm_2008_region.csv` y asignelo al DataFrame `df`
-    df = ____
+    df = pd.read_csv("gm_2008_region.csv")
 
     # Asigne a la variable los valores de la columna `fertility`
-    X_fertility = ____
+    X_fertility = df["fertility"].values
 
     # Asigne a la variable los valores de la columna `life`
-    y_life = ____
+    y_life = df["life"].values
 
     # Importe LinearRegression
-    from ____ import ____
+    from sklearn.linear_model import LinearRegression
 
     # Cree una instancia del modelo de regresión lineal
-    reg = ____
+    reg = LinearRegression()
 
     # Cree El espacio de predicción. Esto es, use linspace para crear
     # un vector con valores entre el máximo y el mínimo de X_fertility
-    prediction_space = ____(
-        ____,
-        ____,
-    ).reshape(____, _____)
-
+    prediction_space = np.linspace(max(X_fertility), min(X_fertility), 139).reshape(139, 1)
+    
     # Entrene el modelo usando X_fertility y y_life
-    reg.fit(____, ____)
+    X_fertility_reshaped = X_fertility.reshape(139, 1)
+    y_life_reshaped = y_life.reshape(139, 1)
+    
+    reg.fit(X_fertility_reshaped, y_life_reshaped)
 
     # Compute las predicciones para el espacio de predicción
     y_pred = reg.predict(prediction_space)
 
     # Imprima el R^2 del modelo con 4 decimales
-    print(____.score(____, ____).round(____))
+    print(reg.score(X_fertility_reshaped, y_life_reshaped).round(4))
 
 
 def pregunta_04():
